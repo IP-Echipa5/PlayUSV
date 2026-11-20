@@ -6,7 +6,7 @@ Monorepo cu npm workspaces:
 
 ```
 apps/api   backend REST (TypeScript, Express, Prisma, PostgreSQL pe Neon)
-apps/web   frontend (urmează)
+apps/web   frontend (vite + react)
 openapi.yaml   contractul API-ului, servit la /api/docs
 ```
 
