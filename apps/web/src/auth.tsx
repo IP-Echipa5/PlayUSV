@@ -1,8 +1,10 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
 import { ApiError, httpApi, type Api } from './api/client';
 import type { Session, User } from './api/types';
+import { DEMO } from './mode';
 
-const KEY = 'csb.session';
+// sesiune separata pt demo, ca un token de demo sa nu ajunga la backend-ul real
+const KEY = DEMO ? 'csb.session.demo' : 'csb.session';
 
 function load(): Session | null {
   try {

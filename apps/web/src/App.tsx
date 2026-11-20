@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { demoApi } from './api/demo';
 import { AuthProvider, useAuth } from './auth';
 import type { Facility } from './api/types';
 import { useLoad } from './lib/useLoad';
+import { DEMO } from './mode';
 import { AllBookings, BlockedUsers, Maintenance } from './screens/Admin';
 import { Facilities } from './screens/Facilities';
 import { FacilityCalendar } from './screens/FacilityCalendar';
@@ -80,7 +82,7 @@ function Shell() {
 export function App() {
   return (
     <PhoneFrame>
-      <AuthProvider>
+      <AuthProvider api={DEMO ? demoApi : undefined}>
         <Shell />
       </AuthProvider>
     </PhoneFrame>

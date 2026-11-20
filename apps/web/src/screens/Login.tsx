@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { DEMO_ACCOUNTS } from '../api/demo';
+import type { Role } from '../api/types';
 import { useAuth } from '../auth';
+import { DEMO } from '../mode';
+import { Avatar, Row } from '../ui/Row';
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
 
@@ -58,6 +62,15 @@ export function Login() {
     return () => script.remove();
   }, [api, signIn]);
 
+  async function demoLogin(email: string) {
+    setError(null);
+    try {
+      signIn(await api.devLogin(email));
+    } catch (err) {
+      setError((err as Error).message);
+    }
+  }
+
   async function devLogin(e: FormEvent) {
     e.preventDefault();
     setError(null);
@@ -77,7 +90,9 @@ export function Login() {
       </div>
       <div className="login-actions">
         {(notice || error) && <p className="note text-red center">{error ?? notice}</p>}
-        {GOOGLE_CLIENT_ID ? (
+        {DEMO ? (
+          <DemoPicker onPick={demoLogin} />
+        ) : GOOGLE_CLIENT_ID ? (
           <div ref={googleBtn} className="google-btn" />
         ) : devOpen ? (
           <form className="dev-login" onSubmit={devLogin}>
@@ -98,8 +113,38 @@ export function Login() {
             Continuă cu Google
           </button>
         )}
-        <p className="note center">Doar conturi @student.usv.ro și @usm.ro</p>
+        <p className="note center">
+          {DEMO
+            ? 'Mod demo: datele stau doar în browserul tău și se refac în fiecare zi.'
+            : 'Doar conturi @student.usv.ro și @usm.ro'}
+        </p>
       </div>
     </main>
+  );
+}
+
+const DEMO_LABEL: Record<Role, [string, string]> = {
+  STUDENT: ['Student', 'Ana Popescu · de la 18:00, cu limită pe zi'],
+  TEACHER: ['Profesor', 'Prof. Mihai Ionescu · oricând, fără limită'],
+  ADMIN: ['Administrator', 'mentenanță, conturi blocate, toate rezervările'],
+};
+
+function DemoPicker({ onPick }: { onPick: (email: string) => void }) {
+  return (
+    <>
+      <div className="section-header">Intră în demo ca</div>
+      <div className="list">
+        {DEMO_ACCOUNTS.map(({ role, email }) => (
+          <Row
+            key={role}
+            icon={<Avatar name={DEMO_LABEL[role][0]} />}
+            title={DEMO_LABEL[role][0]}
+            subtitle={DEMO_LABEL[role][1]}
+            chevron
+            onClick={() => onPick(email)}
+          />
+        ))}
+      </div>
+    </>
   );
 }
