@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import request from 'supertest';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { app } from '../../src/app';
@@ -80,6 +81,28 @@ describe('POST /auth/google', () => {
     expect((await request(app).get('/api/users/me')).body.code).toBe('UNAUTHORIZED');
     const res = await request(app).post('/api/auth/dev-login').send({ email: 'a@usm.ro' });
     expect(res.status).not.toBe(200);
+  });
+});
+
+describe('token expirat', () => {
+  // exp in trecut, semnat cu secretul din vitest.config
+  const expired = (sub: string, secret = 'test-secret') =>
+    jwt.sign({ exp: Math.floor(Date.now() / 1000) - 60 }, secret, { subject: sub });
+  const me = (token: string) =>
+    request(app).get('/api/users/me').set('Authorization', `Bearer ${token}`);
+
+  it('da TOKEN_EXPIRED pt un token valid dar expirat', async () => {
+    const user = await createUser('STUDENT');
+    const res = await me(expired(user.id));
+    expect(res.status).toBe(401);
+    expect(res.body.code).toBe('TOKEN_EXPIRED');
+  });
+
+  it('un token falsificat ramane UNAUTHORIZED chiar daca e si expirat', async () => {
+    const user = await createUser('STUDENT');
+    const res = await me(expired(user.id, 'alt-secret'));
+    expect(res.status).toBe(401);
+    expect(res.body.code).toBe('UNAUTHORIZED');
   });
 });
 

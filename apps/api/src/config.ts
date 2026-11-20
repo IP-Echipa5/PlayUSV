@@ -4,10 +4,18 @@ function required(name: string): string {
   return value;
 }
 
+// durata tokenului: numar + s/m/h/d (ex. 30m, 12h, 7d)
+function duration(name: string, fallback: string): string {
+  const value = process.env[name] ?? fallback;
+  if (!/^\d+[smhd]$/.test(value)) throw new Error(`${name} invalid: ${value} (ex. 12h, 7d)`);
+  return value;
+}
+
 export const config = {
   port: Number(process.env.PORT ?? 3000),
   isDev: process.env.NODE_ENV === 'development',
   jwtSecret: required('JWT_SECRET'),
+  jwtExpiresIn: duration('JWT_EXPIRES_IN', '7d'),
   googleClientId: process.env.GOOGLE_CLIENT_ID ?? '',
   adminEmails: (process.env.ADMIN_EMAILS ?? '')
     .split(',')

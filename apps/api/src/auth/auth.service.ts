@@ -2,7 +2,7 @@ import type { Role, User } from '@prisma/client';
 import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
 import { config } from '../config';
-import { AppError, accountBlocked, unauthorized } from '../lib/errors';
+import { AppError, accountBlocked, tokenExpired, unauthorized } from '../lib/errors';
 import * as usersRepo from '../users/users.repository';
 
 const google = new OAuth2Client();
@@ -15,14 +15,19 @@ export function roleForEmail(email: string): Role | null {
 }
 
 export const signToken = (user: Pick<User, 'id'>) =>
-  jwt.sign({}, config.jwtSecret, { subject: user.id, expiresIn: '7d' });
+  jwt.sign({}, config.jwtSecret, {
+    subject: user.id,
+    // validat in config, aici doar ii spunem lui ts ca e formatul bun
+    expiresIn: config.jwtExpiresIn as jwt.SignOptions['expiresIn'],
+  });
 
 export function verifyToken(token: string): string {
   try {
     const sub = jwt.verify(token, config.jwtSecret).sub;
     if (typeof sub === 'string') return sub;
-  } catch {
-    // fall through
+  } catch (err) {
+    // frontend-ul trebuie sa stie ca e doar expirat, ca sa trimita direct la login
+    if (err instanceof jwt.TokenExpiredError) throw tokenExpired();
   }
   throw unauthorized();
 }

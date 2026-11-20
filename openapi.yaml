@@ -759,9 +759,17 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-          example:
-            code: UNAUTHORIZED
-            message: Autentifică-te pentru a continua.
+          examples:
+            lipsa:
+              summary: token lipsa sau invalid
+              value:
+                code: UNAUTHORIZED
+                message: Autentifică-te pentru a continua.
+            expirat:
+              summary: token expirat, frontend-ul trimite la login
+              value:
+                code: TOKEN_EXPIRED
+                message: Sesiunea a expirat. Autentifica-te din nou.
     Forbidden:
       description: Utilizatorul nu are dreptul să facă această operație
       content:
