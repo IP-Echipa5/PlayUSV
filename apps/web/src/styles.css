@@ -1,0 +1,310 @@
+/* Culorile si dimensiunile vin din Figma (pagina Prototip), stil iOS. */
+:root {
+  --bg: #f2f2f7;
+  --card: #ffffff;
+  --text: #000000;
+  --secondary: #8e8e93;
+  --section: #6d6d72;
+  --separator: #c6c6c8;
+  --disabled: #c7c7cc;
+  --fill: #e3e3e8;
+  --blue: #007aff;
+  --blue-soft: #eaf3ff;
+  --red: #ff3b30;
+  --orange: #ff9500;
+  --green: #34c759;
+  --cyan: #32ade6;
+  --purple: #af52de;
+  --radius: 10px;
+  --radius-btn: 12px;
+
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  font-size: 17px;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* --- telefonul --- */
+
+.stage {
+  min-height: 100dvh;
+}
+
+.phone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.status-bar,
+.home-indicator {
+  display: none;
+}
+
+.phone-body {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+@media (min-width: 600px) and (min-height: 760px) {
+  body {
+    background: radial-gradient(circle at 30% 20%, #ffffff, #d9dbe3);
+  }
+
+  .stage {
+    display: grid;
+    place-items: center;
+    padding: 24px;
+  }
+
+  .phone {
+    width: 393px;
+    height: 852px;
+    max-height: calc(100dvh - 48px);
+    border-radius: 54px;
+    box-shadow:
+      0 0 0 10px #1c1c1e,
+      0 0 0 11px #3a3a3c,
+      0 30px 80px rgb(0 0 0 / 0.35);
+  }
+
+  .status-bar {
+    display: flex;
+    flex: none;
+    justify-content: space-between;
+    align-items: center;
+    height: 54px;
+    padding: 4px 22px 0 50px;
+    font-weight: 600;
+  }
+
+  .home-indicator {
+    display: block;
+    position: absolute;
+    left: 50%;
+    bottom: 8px;
+    width: 139px;
+    height: 5px;
+    margin-left: -69.5px;
+    border-radius: 3px;
+    background: #000;
+    z-index: 30;
+    pointer-events: none;
+  }
+}
+
+/* --- ecran --- */
+
+.screen {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 16px 24px;
+}
+
+.large-title {
+  margin: 46px 0 9px;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 41px;
+}
+
+.nav-bar {
+  position: relative;
+  flex: none;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-bar h1 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.nav-back {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  color: var(--blue);
+}
+
+/* --- liste grupate --- */
+
+.section-header {
+  padding: 14px 16px 2px;
+  font-size: 13px;
+  color: var(--section);
+  text-transform: uppercase;
+}
+
+.list {
+  margin-top: 6px;
+  background: var(--card);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px;
+  padding: 12px 16px;
+  text-align: left;
+  background: var(--card);
+}
+
+.row + .row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 16px;
+  border-top: 0.5px solid var(--separator);
+}
+
+.row.has-icon + .row.has-icon::before {
+  left: 57px;
+}
+
+.row.selected {
+  background: var(--blue-soft);
+}
+
+.row:disabled {
+  cursor: default;
+}
+
+.row-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.row-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.row-subtitle {
+  font-size: 13px;
+  color: var(--secondary);
+}
+
+.row-value {
+  color: var(--secondary);
+  white-space: nowrap;
+}
+
+.chevron {
+  flex: none;
+  color: var(--disabled);
+}
+
+.icon-tile {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 29px;
+  height: 29px;
+  border-radius: 7px;
+  color: #fff;
+}
+
+.avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 29px;
+  height: 29px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.note {
+  margin: 6px 0 0;
+  padding: 0 16px;
+  font-size: 13px;
+  color: var(--section);
+}
+
+/* --- butoane --- */
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 50px;
+  border-radius: var(--radius-btn);
+  background: var(--blue);
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn.danger {
+  background: var(--red);
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.text-blue {
+  color: var(--blue);
+}
+.text-red {
+  color: var(--red);
+}
+.text-orange {
+  color: var(--orange);
+}
+.text-green {
+  color: var(--green);
+}
+.text-muted {
+  color: var(--disabled);
+}
