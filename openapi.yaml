@@ -328,6 +328,40 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
+  /facilities/{facilityId}/daily-limit:
+    get:
+      tags: [Facilities]
+      summary: Cat mai poate rezerva utilizatorul curent intr-o zi la baza asta
+      description: |
+        Pentru pagina de rezervare. Doar studentii au limita zilnica; pentru cadre didactice
+        si administratori `limitMinutes` si `remainingMinutes` sunt `null`.
+        Se numara doar rezervarile active (nu cele anulate).
+      operationId: getDailyLimit
+      parameters:
+        - $ref: '#/components/parameters/FacilityId'
+        - name: date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+            example: '2026-10-16'
+      responses:
+        '200':
+          description: Minutele folosite si ramase
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DailyLimit'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/AccountBlocked'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
   /bookings:
     get:
       tags: [Bookings]
@@ -885,6 +919,24 @@ components:
             type: string
           example: [Terenul 1, Terenul 2]
 
+    DailyLimit:
+      type: object
+      required: [date, limitMinutes, usedMinutes, remainingMinutes]
+      properties:
+        date:
+          type: string
+          format: date
+        limitMinutes:
+          type: integer
+          nullable: true
+          example: 60
+        usedMinutes:
+          type: integer
+          example: 30
+        remainingMinutes:
+          type: integer
+          nullable: true
+          example: 30
     Slot:
       type: object
       required: [unitId, startTime, endTime, capacity, booked, status, bookedBy]
