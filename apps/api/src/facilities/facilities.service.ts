@@ -151,3 +151,20 @@ export async function listSlots(user: User, facilityId: string, date: string, un
     return slots;
   });
 }
+
+/**
+ * Cat a rezervat userul curent azi (sau la `date`) la baza asta si cat mai poate.
+ * Pt pagina de rezervare: "mai ai 30 min azi la Bazin". Doar studentii au limita.
+ */
+export async function dailyLimit(user: User, facilityId: string, date: string) {
+  const facility = await getOrThrow(facilityId);
+  const bookings = await bookingsRepo.userActiveOnDate(user.id, facility.id, date);
+  const usedMinutes = bookings.reduce((sum, b) => sum + b.endTime - b.startTime, 0);
+  const limitMinutes = user.role === 'STUDENT' ? facility.studentDailyLimitMinutes : null;
+  return {
+    date,
+    limitMinutes,
+    usedMinutes,
+    remainingMinutes: limitMinutes === null ? null : Math.max(0, limitMinutes - usedMinutes),
+  };
+}

@@ -51,3 +51,8 @@ facilitiesRouter.get('/:facilityId/slots', async (req, res) => {
   const q = z.object({ date: s.date, unitId: s.uuid.optional() }).parse(req.query);
   res.json(await facilitiesService.listSlots(req.user, facilityId(req.params), q.date, q.unitId));
 });
+
+facilitiesRouter.get('/:facilityId/daily-limit', async (req, res) => {
+  const { date } = z.object({ date: s.date }).parse(req.query);
+  res.json(await facilitiesService.dailyLimit(req.user, facilityId(req.params), date));
+});
