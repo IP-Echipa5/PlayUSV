@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../auth';
 import type { Booking, Facility, Slot, UserSummary } from '../api/types';
-import { duration, longDay, toEndMinutes, toMinutes } from '../lib/time';
+import { duration, longDay, toEndMinutes, toMinutes, today } from '../lib/time';
 import { Sheet } from '../ui/parts';
 import { Avatar, Row } from '../ui/Row';
 
@@ -51,12 +51,16 @@ export function ConfirmSheet({
     }
   }
 
+  const over = remaining !== null && minutes > remaining;
+  const when = date === today() ? 'azi' : 'în ziua aleasă';
+  const place = facility.name.split(' ')[0].toLowerCase();
+
   return (
     <Sheet
       title="Confirmare"
       onClose={onClose}
       footer={
-        <button type="button" className="btn" disabled={busy} onClick={book}>
+        <button type="button" className="btn" disabled={busy || over} onClick={book}>
           {busy ? 'Se rezervă…' : 'Rezervă'}
         </button>
       }
@@ -69,11 +73,18 @@ export function ConfirmSheet({
         <Row title="Interval" value={`${startTime} – ${endTime}`} />
         <Row title="Durată" value={duration(minutes)} />
       </div>
-      {remaining !== null && (
-        <p className="note">
-          După această rezervare îți mai rămân {duration(Math.max(0, remaining - minutes))} azi la{' '}
-          {facility.name.split(' ')[0].toLowerCase()}.
+      {over ? (
+        <p className="note text-red">
+          Depășești limita zilnică:{' '}
+          {remaining ? `mai ai doar ${duration(remaining)}` : 'nu mai ai minute'} {when} la {place}.
+          Alege un interval mai scurt sau altă zi.
         </p>
+      ) : (
+        remaining !== null && (
+          <p className="note">
+            După această rezervare îți mai rămân {duration(remaining - minutes)} {when} la {place}.
+          </p>
+        )
       )}
       {error && <p className="note text-red">{error}</p>}
       {facility.capacityPerSlot > 1 && (
