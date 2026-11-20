@@ -8,12 +8,15 @@ import { bookingsRouter } from './bookings/bookings.routes';
 import { facilitiesRouter } from './facilities/facilities.routes';
 import { authenticate } from './middleware/auth';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
+import { securityHeaders } from './middleware/securityHeaders';
 import { maintenanceRouter } from './maintenance/maintenance.routes';
 import { usersRouter } from './users/users.routes';
 
 const spec = YAML.parse(fs.readFileSync(path.resolve(__dirname, '../../../openapi.yaml'), 'utf8'));
 
 export const app = express();
+app.disable('x-powered-by');
+app.use(securityHeaders);
 app.use(express.json());
 
 const api = express.Router();
