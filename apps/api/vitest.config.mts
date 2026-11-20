@@ -18,6 +18,7 @@ export default defineConfig({
       JWT_SECRET: 'test-secret',
       GOOGLE_CLIENT_ID: 'test-client-id',
       ADMIN_EMAILS: 'admin@usm.ro',
+      CORS_ORIGINS: 'http://localhost:5173',
       BOOKING_MAX_DAYS_AHEAD: '14',
       CANCEL_CUTOFF_MINUTES: '0',
     },

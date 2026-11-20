@@ -43,6 +43,7 @@ Completează `apps/api/.env` (fișierul nu se urcă în git):
 | `JWT_SECRET`             | Cheie lungă și aleatoare pentru JWT-urile aplicației.                                          |
 | `JWT_EXPIRES_IN`         | Cat e valabil tokenul, ex. `12h`, `7d` (implicit 7d).                                          |
 | `ADMIN_EMAILS`           | Emailurile cu rol ADMIN, separate prin virgulă.                                                |
+| `CORS_ORIGINS`           | Originile frontend-ului (CORS), separate prin virgula, ex. `http://localhost:5173`.            |
 | `PORT`                   | Portul serverului (implicit 3000).                                                             |
 | `NODE_ENV`               | `development` activează `POST /api/auth/dev-login`. Nu îl seta așa în producție.               |
 | `BOOKING_MAX_DAYS_AHEAD` | Cu câte zile în avans se poate rezerva (implicit 14).                                          |

@@ -8,13 +8,18 @@ import { bookingsRouter } from './bookings/bookings.routes';
 import { facilitiesRouter } from './facilities/facilities.routes';
 import { healthRouter } from './health/health.routes';
 import { authenticate } from './middleware/auth';
+import { cors } from './middleware/cors';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
+import { securityHeaders } from './middleware/securityHeaders';
 import { maintenanceRouter } from './maintenance/maintenance.routes';
 import { usersRouter } from './users/users.routes';
 
 const spec = YAML.parse(fs.readFileSync(path.resolve(__dirname, '../../../openapi.yaml'), 'utf8'));
 
 export const app = express();
+app.disable('x-powered-by');
+app.use(securityHeaders);
+app.use(cors);
 app.use(express.json());
 
 const api = express.Router();
