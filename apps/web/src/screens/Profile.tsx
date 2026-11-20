@@ -1,4 +1,6 @@
+import { resetDemo } from '../api/demo';
 import { useAuth } from '../auth';
+import { DEMO } from '../mode';
 import type { Role } from '../api/types';
 import { useLoad } from '../lib/useLoad';
 import { Calendar, NoEntry, Wrench } from '../ui/icons';
@@ -68,6 +70,24 @@ export function Profile({ onOpen }: { onOpen: (p: AdminPage) => void }) {
           <p className="note">
             Secțiunea Administrare apare doar pentru conturile de administrator.
           </p>
+        </>
+      )}
+      {DEMO && (
+        <>
+          <div className="section-header">Demo</div>
+          <div className="list">
+            <button
+              type="button"
+              className="row text-blue"
+              onClick={() => {
+                resetDemo();
+                signOut('Datele demo au fost resetate.');
+              }}
+            >
+              Resetează datele demo
+            </button>
+          </div>
+          <p className="note">Pune la loc bazele, conturile și rezervările de la început.</p>
         </>
       )}
       <div className="list logout">
