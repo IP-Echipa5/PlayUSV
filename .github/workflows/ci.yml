@@ -8,6 +8,18 @@ on:
 jobs:
   api:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+          POSTGRES_DB: csb_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 2s
+          --health-retries 15
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -20,3 +32,7 @@ jobs:
         working-directory: apps/api
       - run: npm run lint
       - run: npm run typecheck
+      # testele golesc baza, aici e una de unica folosinta
+      - run: npm test
+        env:
+          DATABASE_URL_TEST: postgresql://postgres@localhost:5432/csb_test
