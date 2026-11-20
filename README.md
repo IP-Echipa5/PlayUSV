@@ -97,6 +97,18 @@ curl -X POST http://localhost:3000/api/auth/dev-login -H "Content-Type: applicat
 
 Folosește `token` din răspuns în antetul `Authorization: Bearer <token>`.
 
+## Postgres local (docker)
+
+pt teste nu ai nevoie de neon, merge un postgres local:
+
+```bash
+docker compose up -d --wait   # porneste postgres 17 pe localhost:5432, baza csb_test
+npm test                      # DATABASE_URL_TEST din .env.example merge direct
+docker compose down           # opreste (datele raman in volumul pgdata)
+```
+
+daca portul 5432 e ocupat schimba `ports` in `docker-compose.yml` si portul din `DATABASE_URL_TEST`.
+
 ## Teste
 
 ```bash
