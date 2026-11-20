@@ -6,6 +6,7 @@ import YAML from 'yaml';
 import { authRouter } from './auth/auth.routes';
 import { bookingsRouter } from './bookings/bookings.routes';
 import { facilitiesRouter } from './facilities/facilities.routes';
+import { healthRouter } from './health/health.routes';
 import { authenticate } from './middleware/auth';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 import { maintenanceRouter } from './maintenance/maintenance.routes';
@@ -18,6 +19,7 @@ app.use(express.json());
 
 const api = express.Router();
 api.use('/docs', swaggerUi.serve, swaggerUi.setup(spec));
+api.use('/health', healthRouter);
 api.use('/auth', authRouter);
 // Everything below requires a valid JWT.
 api.use(authenticate);
