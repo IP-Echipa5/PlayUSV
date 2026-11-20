@@ -34,18 +34,19 @@ function TabBar({ tab, onChange }: { tab: Tab; onChange: (t: Tab) => void }) {
   );
 }
 
+// cheia pe id-ul userului: la alt cont pornim de la zero (tab, ecrane deschise)
 function Shell() {
-  const { api, user } = useAuth();
+  const { user } = useAuth();
+  return user ? <Signed key={user.id} /> : <Login />;
+}
+
+function Signed() {
+  const { api } = useAuth();
   const [tab, setTab] = useState<Tab>('baze');
   const [pushed, setPushed] = useState<Pushed | null>(null);
   const [fresh, setFresh] = useState<string | null>(null);
-  const facilities = useLoad(
-    () => (user ? api.facilities() : Promise.resolve([])),
-    [api, user?.id],
-  );
+  const facilities = useLoad(() => api.facilities(), [api]);
   const list = facilities.data ?? [];
-
-  if (!user) return <Login />;
 
   const back = () => setPushed(null);
   if (pushed?.kind === 'facility') {
