@@ -11,6 +11,9 @@ export class AppError extends Error {
 export const unauthorized = (message = 'Autentifică-te pentru a continua.') =>
   new AppError(401, 'UNAUTHORIZED', message);
 
+export const tokenExpired = () =>
+  new AppError(401, 'TOKEN_EXPIRED', 'Sesiunea a expirat. Autentifica-te din nou.');
+
 export const forbidden = (message = 'Doar administratorii pot face această operație.') =>
   new AppError(403, 'FORBIDDEN', message);
 
