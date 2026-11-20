@@ -7,6 +7,7 @@ import { authRouter } from './auth/auth.routes';
 import { bookingsRouter } from './bookings/bookings.routes';
 import { facilitiesRouter } from './facilities/facilities.routes';
 import { authenticate } from './middleware/auth';
+import { cors } from './middleware/cors';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 import { securityHeaders } from './middleware/securityHeaders';
 import { maintenanceRouter } from './maintenance/maintenance.routes';
@@ -17,6 +18,7 @@ const spec = YAML.parse(fs.readFileSync(path.resolve(__dirname, '../../../openap
 export const app = express();
 app.disable('x-powered-by');
 app.use(securityHeaders);
+app.use(cors);
 app.use(express.json());
 
 const api = express.Router();

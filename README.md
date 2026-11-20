@@ -42,6 +42,7 @@ Completează `apps/api/.env` (fișierul nu se urcă în git):
 | `GOOGLE_CLIENT_ID`       | Client ID-ul OAuth din Google Cloud Console.                                                   |
 | `JWT_SECRET`             | Cheie lungă și aleatoare pentru JWT-urile aplicației.                                          |
 | `ADMIN_EMAILS`           | Emailurile cu rol ADMIN, separate prin virgulă.                                                |
+| `CORS_ORIGINS`           | Originile frontend-ului (CORS), separate prin virgula, ex. `http://localhost:5173`.            |
 | `PORT`                   | Portul serverului (implicit 3000).                                                             |
 | `NODE_ENV`               | `development` activează `POST /api/auth/dev-login`. Nu îl seta așa în producție.               |
 | `BOOKING_MAX_DAYS_AHEAD` | Cu câte zile în avans se poate rezerva (implicit 14).                                          |

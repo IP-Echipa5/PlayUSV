@@ -13,6 +13,11 @@ export const config = {
     .split(',')
     .map((e) => e.trim().toLowerCase())
     .filter(Boolean),
+  // originile frontend-ului, separate prin virgula (ex. http://localhost:5173)
+  corsOrigins: (process.env.CORS_ORIGINS ?? '')
+    .split(',')
+    .map((o) => o.trim().replace(/\/$/, ''))
+    .filter(Boolean),
   // Not yet decided by the client; see README.
   maxDaysAhead: Number(process.env.BOOKING_MAX_DAYS_AHEAD ?? 14),
   cancelCutoffMinutes: Number(process.env.CANCEL_CUTOFF_MINUTES ?? 0),
