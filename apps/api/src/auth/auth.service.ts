@@ -15,7 +15,11 @@ export function roleForEmail(email: string): Role | null {
 }
 
 export const signToken = (user: Pick<User, 'id'>) =>
-  jwt.sign({}, config.jwtSecret, { subject: user.id, expiresIn: '7d' });
+  jwt.sign({}, config.jwtSecret, {
+    subject: user.id,
+    // validat in config, aici doar ii spunem lui ts ca e formatul bun
+    expiresIn: config.jwtExpiresIn as jwt.SignOptions['expiresIn'],
+  });
 
 export function verifyToken(token: string): string {
   try {

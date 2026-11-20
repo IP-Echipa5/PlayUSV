@@ -41,6 +41,7 @@ Completează `apps/api/.env` (fișierul nu se urcă în git):
 | `DATABASE_URL_TEST`      | Baza de date pentru teste: un branch Neon separat sau un Postgres local. **Testele o golesc.** |
 | `GOOGLE_CLIENT_ID`       | Client ID-ul OAuth din Google Cloud Console.                                                   |
 | `JWT_SECRET`             | Cheie lungă și aleatoare pentru JWT-urile aplicației.                                          |
+| `JWT_EXPIRES_IN`         | Cat e valabil tokenul, ex. `12h`, `7d` (implicit 7d).                                          |
 | `ADMIN_EMAILS`           | Emailurile cu rol ADMIN, separate prin virgulă.                                                |
 | `PORT`                   | Portul serverului (implicit 3000).                                                             |
 | `NODE_ENV`               | `development` activează `POST /api/auth/dev-login`. Nu îl seta așa în producție.               |
