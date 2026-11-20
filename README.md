@@ -76,6 +76,12 @@ npm run build && npm start   # producție
 
 API-ul rulează la `http://localhost:3000/api`.
 
+verificare rapida ca merge serverul si baza de date (fara token):
+
+```bash
+curl http://localhost:3000/api/health   # {"status":"ok","db":"ok",...} sau 503 DB_UNAVAILABLE
+```
+
 ## Swagger UI
 
 Deschide `http://localhost:3000/api/docs`. Apasă **Authorize** și lipește un token (vezi mai jos).

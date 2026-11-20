@@ -27,6 +27,8 @@ servers:
   - url: http://localhost:3000/api
     description: Server local de dezvoltare
 tags:
+  - name: Health
+    description: Starea serverului
   - name: Auth
     description: Autentificare cu Google
   - name: Users
@@ -41,6 +43,29 @@ security:
   - bearerAuth: []
 
 paths:
+  /health:
+    get:
+      tags: [Health]
+      summary: Verifică dacă serverul rulează și ajunge la baza de date
+      operationId: getHealth
+      security: []
+      responses:
+        '200':
+          description: Serverul și baza de date răspund
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+        '503':
+          description: Baza de date nu răspunde
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: DB_UNAVAILABLE
+                message: Baza de date nu răspunde.
+
   /auth/google:
     post:
       tags: [Auth]
@@ -741,6 +766,23 @@ components:
             message: Ora de sfârșit trebuie să fie după ora de început.
 
   schemas:
+    Health:
+      type: object
+      required: [status, db, dbMs, time]
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        db:
+          type: string
+          enum: [ok]
+        dbMs:
+          type: integer
+          description: Cât a durat interogarea de test, în milisecunde
+          example: 4
+        time:
+          type: string
+          format: date-time
     Role:
       type: string
       enum: [STUDENT, TEACHER, ADMIN]
